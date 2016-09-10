@@ -1,7 +1,4 @@
-#ClojureBridge Track 1
-
-This the readme.md file. 
-
+Forked from [Minneapolis Clojurebridge Track 1](https://github.com/clojurebridge-minneapolis/track1-chatter) Project. We thank them for starting this and sharing it.
 
 ### Table Of Contents For The Workshop
 * [Chapter 1: ClojureBridge Track 1](Pages/Page%201_Intro%20TOC.md)
