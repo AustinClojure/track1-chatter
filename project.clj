@@ -1,28 +1,32 @@
 (defproject chatter "0.1.0-SNAPSHOT"
-  :description "clojure web app for displaying messages"
-  :url "http://example.com/FIXME"
-  :min-lein-version "2.0.0"
-  :dependencies [[org.clojure/clojure "1.6.0"]
-                 [compojure "1.3.1"]
-                 [ring/ring-defaults "0.1.2"]
-                 [ring/ring-jetty-adapter "1.3.2"]
+  :description "Clojure web app for displaying messages"
+  :url "https://github.com/AustinClojure/track1-chatter"
+
+  :dependencies [[org.clojure/clojure "1.8.0"]
+
+                 [compojure "1.5.1"]
+                 [ring/ring-jetty-adapter "1.5.0"]
+                 [ring/ring-defaults "0.2.1"]
+
                  [hiccup "1.0.5"]
+
                  [hickory "0.5.4"]
                  [environ "1.0.0"]]
-  :plugins [[lein-ring "0.8.13"]
+
+  :plugins [[lein-ring "0.9.7"]
             [lein-environ "1.0.0"]]
-  :ring {:handler chatter.handler/app
-         :init chatter.handler/init
-         :destroy chatter.handler/destroy}
-  :aot :all
-  :main chatter.handler
+
+  :ring {:handler chatter.handler/app}
+
   :profiles
-  {:dev
-   {:dependencies [[javax.servlet/servlet-api "2.5"]
-                   [ring-mock "0.1.5"]]}
-   :production
-   {:ring
-    {:open-browser? false, :stacktraces? false, :auto-reload? false}
-    :env {production true}}}
-  
+  {:dev        {:dependencies [[javax.servlet/servlet-api "2.5"]
+                               [ring/ring-mock "0.3.0"]]}
+   :production {:ring {:open-browser? false
+                       :stacktraces? false
+                       :auto-reload? false}
+
+                :env {production true}}}
+
+  :aot :all
+  :main chatter.main
   :uberjar-name "chatter-standalone.jar")
