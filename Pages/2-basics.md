@@ -46,4 +46,4 @@ Example:
  Later we will see how to create anonymous functions and when you would want to use one.
  
  
-Next [Chapter 3: REPL](Pages/3-repl.md)
+Next [Chapter 3: REPL](/Pages/3-repl.md)

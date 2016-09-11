@@ -250,4 +250,4 @@ Our app now looks like:
 ```
 
 
-Next [Chapter 8: Add Bootstrap](Pages/8-add-bootstrap.md)
+Next [Chapter 8: Add Bootstrap](/Pages/8-add-bootstrap.md)

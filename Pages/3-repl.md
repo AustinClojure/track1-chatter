@@ -51,4 +51,4 @@ clojure.core/first
 
 
 
-Next [Chapter 4: Start Project](Pages/4-start-project.md)
+Next [Chapter 4: Start Project](/Pages/4-start-project.md)

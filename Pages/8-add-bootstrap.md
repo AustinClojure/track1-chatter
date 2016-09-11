@@ -82,4 +82,4 @@ The problem is in our `defroutes`. We have a route handling browser GET or POST 
 ```
 
 
-Next [Chapter 10](10-publish-github.md), we will complete the project by pushing your Chatter app live so you can share with your friends!
+Next [Chapter 10](/Pages/10-publish-github.md), we will complete the project by pushing your Chatter app live so you can share with your friends!

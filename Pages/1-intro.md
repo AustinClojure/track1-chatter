@@ -8,4 +8,4 @@
 
 
 
-Next [Chapter 2: Basics](Pages/2-basics.md)
+Next [Chapter 2: Basics](/Pages/2-basics.md)
