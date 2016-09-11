@@ -79,7 +79,7 @@ A problem with our new `app-routes` is that it has two different functions right
   (route/not-found "Not Found"))
 ```
 
-`page-index` is a function that takes no arguments (for now!). It calls a hiccup function `page/html5` to generate html from a vector representing the `head` sections and a vector representing the `body` elements of the html.
+`index-page` is a function that takes no arguments (for now!). It calls a hiccup function `page/html5` to generate html from a vector representing the `head` sections and a vector representing the `body` elements of the html.
 
 Save `handler.clj`, and refresh the browser to make sure our page still works. From the outside, we shouldn't see a change. The page should still display "Our Chat App" and the html should be identical. Now, let's double check our git status:
 
@@ -126,7 +126,7 @@ After the ns expression, add:
                     {:name "green" :message "green makes it go faster"}])
 ```
 
-Next, we'll modify the HTML to display the messages.  We will also add a parameter to the `page-index` function so that we can give it a messages we want displayed.
+Next, we'll modify the HTML to display the messages.  We will also add a parameter to the `index-page` function so that we can give it a messages we want displayed.
 
 ```clojure
 (defn index-page
@@ -139,7 +139,7 @@ Next, we'll modify the HTML to display the messages.  We will also add a paramet
     [:h1 "Our Chat App"]
     [:p messages]]))
 (defroutes app-routes
-  (GET "/" [] (page-index chat-messages))
+  (GET "/" [] (index-page chat-messages))
   (route/not-found "Not Found"))
 ```
 
@@ -152,7 +152,7 @@ This blows up spectacularly.
 []()
 
 This is a stack trace - it gives us an idea what the program was doing when it hit the problem. Ignore all the files that aren't ones you wrote for the project. In my case, the first file of interest is
-`handler.clj`, line 14, the `page-index` function.
+`handler.clj`, line 14, the `index-page` function.
 
 The exception message on the top, `"... is not a valid element name"`, is a clue to what's wrong.  Elements are what fragments of html are called.  Hiccup is responsible for generating html from Clojure symbols. The problem is that we've got a map with symbols in it and hiccup thinks they're html.  They're not, so it creates an error.
 

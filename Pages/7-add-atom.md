@@ -47,12 +47,12 @@ We'll use:
 
 Now `chat-messages` is pointing to the `atom` protecting our vector of hashes.
 
-Because `chat-messages` is pointing to the `atom`, we can't simply `map` over it in `page-index`.  Now, we have to tell Clojure that we want to generate HTML for the contents of the atom. This allows Clojure to ensure the messages are always read in a consistent
+Because `chat-messages` is pointing to the `atom`, we can't simply `map` over it in `index-page`.  Now, we have to tell Clojure that we want to generate HTML for the contents of the atom. This allows Clojure to ensure the messages are always read in a consistent
 state, even though something could be modifying them.
 
 > Reading what's stored in an `atom` is called "dereferencing" and is represented by the `@` character.
 
-We will dereference the `chat-messages` atom just before it is passed to the `page-index` function. We can do this by changing our routes from:
+We will dereference the `chat-messages` atom just before it is passed to the `index-page` function. We can do this by changing our routes from:
 
 ```clojure
 (defroutes app-routes
@@ -141,7 +141,7 @@ The new `app-routes` looks like
 2. `(get params "name")` and `(get params "msg")` extract the values of the "name" and "msg" fields from the form data.
 3. The `update-messages!` function is then called with the `chat-messages` atom and the values of the "name" and "msg" fields from the form.
 4. After `update-messages!` has added the new message to the inner content of `chat-messages` it returns the new, dereferenced, vector of messages held by the atom.
-5. `page-index` is called with the updated collection of messages and builds the HTML response for the user.
+5. `index-page` is called with the updated collection of messages and builds the HTML response for the user.
 
 Another way of writing this, which may make the intent more clear, is to name some of the intermediate values using `let`. This will allow us to temporarily provide names for the results of some of the expressions.
 
@@ -160,8 +160,8 @@ Another way of writing this, which may make the intent more clear, is to name so
 2.  Extract the "msg" field from the form data in `params` and name it `msg-param`.
 3.  Execute the `update-messages!` function for the chat-messages atom and the values of the previously established `name-param` and `msg-param` names.
 4.  Assign the name `new-messages` to the result of `update-messages!`.
-5.  Execute `page-index` for the new collection of messages now called `new-messages`.
-6.  Return the HTML produced by `page-index` and forget about the names `name-param`, `msg-param`, and `new-messages`.
+5.  Execute `index-page` for the new collection of messages now called `new-messages`.
+6.  Return the HTML produced by `index-page` and forget about the names `name-param`, `msg-param`, and `new-messages`.
 
 > #### let
 > `let` expressions are used to temporarily associate names with the results of other expressions, similar to how a function assigns names to its arguments. These named values can also be re-used without the cost of re-evaluating the expression that generated them.

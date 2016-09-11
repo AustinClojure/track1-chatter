@@ -71,7 +71,7 @@ Now that we have imported the hiccup form function, we can use it to generate th
 
 `form/submit-button` is a hiccup function for generating the submit button.
 
-We want to generate the form button below the title but above the list of messages in the `page-index` function.
+We want to generate the form button below the title but above the list of messages in the `index-page` function.
 
 Finally, we're going to change our definition of the app
 
