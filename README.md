@@ -5,7 +5,7 @@ Forked from [Minneapolis Clojurebridge Track 1](https://github.com/clojurebridge
 * [Chapter 2: Basics](Pages/2-basics.md)
 * [Chapter 3: REPL](Pages/3-repl.md)
 * [Chapter 4: Start Project](Pages/4-start-project.md)
-* [Chapter 5: Build Page](Pages/5-buid-page.md)
+* [Chapter 5: Build Page](Pages/5-build-page.md)
 * [Chapter 6: Add Form](Pages/6-add-form.md)
 * [Chapter 7: Add Atom](Pages/7-add-atom.md)
 * [Chapter 8: Add Bootstrap](Pages/8-add-bootstrap.md)
