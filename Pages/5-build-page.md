@@ -2,8 +2,6 @@
 
 Now let's change the app's main page from "Hello, World" to something a little more chatty.
 
-First, let's create and checkout a new branch called, `view-messages`. If you need a refresher on [creating and checking out branches](Page%204_%20Change%20code.md#branch-the-code), review Chapter 4. Once you are on the new `view-messages` branch, we'll move on to updating the code.
-
 ### Adding Hiccup
 
 We need to write code that will generate HTML. To do this, we will use a library called `hiccup`. We don't have this library yet, so we're going to add it. Adding a new library requires two steps:
@@ -13,7 +11,7 @@ We need to write code that will generate HTML. To do this, we will use a library
 Add hiccup by updating the `project.clj` file to look like this:
 
 ```clojure
-  :dependencies [[org.clojure/clojure "1.7.0"]
+  :dependencies [[org.clojure/clojure "1.8.0"]
                  [compojure "1.4.0"]
                  [ring/ring-defaults "0.1.5"]
                  [hiccup "1.0.5"]]
@@ -51,7 +49,6 @@ Now `http://localhost:3000` displays "Our Chat App".  Right-click and select `Vi
 
 The hiccup function(*) `page/html5` generates an HTML page. It expects Clojure vectors with symbols representing corresponding HTML tags. Hiccup will automatically add the closing tag when it reaches the end of the vector.
 
-* _<<< include screenshot >>>_
 
 Compare the hiccup to HTML in `View Page Source` to the HTML we wrote by hand earlier.
 
@@ -67,41 +64,41 @@ Compare the hiccup to HTML in `View Page Source` to the HTML we wrote by hand ea
 
 A problem with our new `app-routes` is that it has two different functions right now. Its main role is to take the incoming request and decide what to do.  Right now it's doing that, but it is also generating a full HTML page. As we add more pages, this will become too complicated to manage. We'll get ahead of the game by splitting out the task of generating the HTML into a helper function.
 
-Clojure defines a function using this syntax:
 
- ```clojure
- (defn name
-   doc-string?
-   params-vector
-   expression)
- ```
-
- 1. `defn` - introduces the defn expression.
- 2. `name` - what you call the function.
- 3. `doc-string?` - an optional description of the function.
- 4. `params-vector` - a vector of symbols naming the functions arguments.
- 5. `expression` - the body of the function.
-
- `hello-world`, a traditional first function, might be programmed in Clojure like:
-
- ```clojure
- (defn hello-world
-   "ye olde 'Hello, World'"
-   []
-   "Hello, World")
- ```
 
  `hello-world` takes no arguments and returns the string "Hello, World".
 
- `
+ ```
  user> (hello-world)
  "Hello, World"
- `
+ ```
+
+If you forget the ( ) around the function name, you'll see something like this:
+
+```
+user> hello-world
+\#object[user$hello_world 0xf388310 "user$hello_world@f388310"]
+```
+
+If you forget how to call the function and what parameters you can look at the docstring and signature by calling `doc`.
+
+```
+user> (clojure.repl/doc hello-world)
+-------------------------
+user/hello-world
+([])
+  ye olde 'Hello, World'
+```
+
+You can do `(doc hello-world)` if you have the `clojure.repl` namespace already loaded.
+
+
+
 
 Our new code should look like:
 
 ```clojure
-(defn generate-message-view
+(defn index-page
   "This generates the HTML for displaying messages"
   []
   (page/html5
@@ -109,8 +106,9 @@ Our new code should look like:
     [:title "chatter"]]
    [:body
     [:h1 "Our Chat App"]]))
+
 (defroutes app-routes
-  (GET "/" [] (generate-message-view))
+  (GET "/" [] (index-page))
   (route/not-found "Not Found"))
 ```
 
@@ -119,74 +117,39 @@ Our new code should look like:
 Save `handler.clj`, and refresh the browser to make sure our page still works. From the outside, we shouldn't see a change. The page should still display "Our Chat App" and the html should be identical. Now, let's double check our git status:
 
 
-    $: git status
-    On branch view-messages
-    Changes not staged for commit:
-       (use "git add <file>..." to update what will be committed)
-       (use "git checkout -- <file>..." to discard changes in working directory)
-
-          modified:   project.clj
-          modified:   src/chatter/core/handler.clj
-
-    no changes added to commit (use "git add" and/or "git commit -a")
-
-That looks right so [add, commit, merge the changes back to master, and then push to GitHub](Page%204_%20Change%20code.md#adding-and-committing-the-changes).  Then, delete the `view-messages` branch. You should see the commit numbers go up on GitHub.
 
 ### Adding Messages
 
 Our app is not displaying messages, nor do we have a way of adding messages. Let's make that happen now.
 
-[Create and check out a branch to work on](Page%204_%20Change%20code.md#branch-the-code).
-
 Let's change the app so it displays messages. We'll represent the messages as a vector of maps. Each map will have a `:name` and `:message`key and the corresponding value, in quotes.  For example, the code below will represent blue's first post.
 
 ```clojure
-{:name "blue" :message "blue's first post"}
+(def messages {:name "blue" :message "blue's first post"})
+
 ```
 
-This is a map with two keys. 
+This is a map with two keys named `messages`. 
 <ol>
-<li> `:name` is "blue", because blue posted it</li>
-<li>`:message` is the content of the post
-and its value is "blue's first post".</li>
+<li>`:name` is "blue", because blue posted it</li>
+<li>`:message` is the content of the post and its value is "blue's first post".</li>
 </ol>
-
-Programs often need to associate keys with values and the usual data structure for doing that are hash tables. Clojure calls them maps and they look like this:
- 
- `clojure`
- 
-`(def cities`
-
-` {"Tokyo" 37900000`
-
-`"Delhi" 26580000`
-  
-`"Seoul" 26100000})`
- 
-
-Here `cities` is a hash table whose _keys_ are strings (in this case the names of cities) and the _values_ are the populations of each city.
 
 To get a value from a map, pass the map and key into the `get` function. For example,
 
 ```clojure
-(get cities "Tokyo")
+(get messages :name)
 ```
-returns 37900000. When the keys are keywords, you can also use the keyword as a function that takes the map and returns the values.
+When the keys are keywords, you can also use the keyword as a function that takes the map and returns the values.
 
 ```clojure
-(:name {:name "blue" :message "blue's first post"})
+(:name messages)
 ```
-returns "blue".
-
-> ```clojure
-> (:message {:name "blue" :message "blue's first post"})
-> ```
-> returns "blue's first post".
->
+returns `"blue"`.
 
 Maps are everywhere in Clojure and are used for many things where other languages might use objects.
 
-Let's call the vector simply `chat-messages` and hard code(*) some samples to get started. Add a chat-messages variable to `handler.clj`.
+Let's call the vector simply `chat-messages` and hard code some samples to get started. Add a chat-messages variable to `handler.clj`.
 
 After the ns expression, add:
 
@@ -199,7 +162,7 @@ After the ns expression, add:
 Next, we'll modify the HTML to display the messages.  We will also add a parameter to the `generate-message-view` function so that we can give it a messages we want displayed.
 
 ```clojure
-(defn generate-message-view
+(defn index-page
   "This generates the HTML for displaying messages"
   [messages]
   (page/html5
@@ -229,7 +192,7 @@ The exception message on the top, `"... is not a valid element name"`, is a clue
 We can fix the issue by converting our maps to strings.
 
 ```clojure
-(defn generate-message-view
+(defn index-page
   "This generates the HTML for displaying messages"
   [messages]
   (page/html5
