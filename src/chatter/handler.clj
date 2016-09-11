@@ -1,17 +1,31 @@
 (ns chatter.handler
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
-            [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
-            [ring.middleware.params :refer [wrap-params]]
-            [ring.adapter.jetty :as jetty]
+            [hiccup.core :as hiccup]
             [hiccup.page :as page]
-            [hiccup.form :as form]
-            [ring.util.anti-forgery :as anti-forgery]
-            [environ.core :refer [env]]))
+            [ring.middleware.params :as params]
+            [ring.util.response :as response]))
 
-(def chat-messages (atom '()))
+;; ----------------------------------------
 
-(defn generate-message-view
+(def chat-messages (atom nil))
+
+(defn make-message [name message]
+  {:name name :message message})
+
+(defn save-message!
+  "This will update a message list atom"
+  [messages new-chat-message]
+  (swap! messages conj new-chat-message))
+
+;; ----------------------------------------
+
+(defn message-to-row [message]
+  [:tr
+   [:td (hiccup/h (:name message))]
+   [:td (hiccup/h (:message message))]])
+
+(defn message-view
   "This generates the HTML for displaying messages"
   [messages]
   (page/html5
@@ -20,38 +34,24 @@
    [:body
     [:h1 "Our Chat App"]
     [:p
-     (form/form-to
-      [:post "/"]
-      "Name: " (form/text-field "name")
-      "Message: " (form/text-field "msg")
-      (form/submit-button "Submit"))]
+     [:form {:action "/" :method "POST"}
+      "Name: "     [:input {:type "text" :name "name"}]
+      "Message: "  [:input {:type "text" :name "message"}]
+      [:input {:type "submit"} "Submit"]]]
     [:p
      [:table
-      (map (fn [m] [:tr [:td (:name m)] [:td (:message m)]]) messages)]]]))
+      (map message-to-row messages)]]]))
 
-(defn update-messages!
-  "This will update a message list atom"
-  [messages name new-message]
-  (swap! messages conj  {:name name :message new-message}))
+(defn post-new-message [chat-messages name message]
+  (save-message! chat-messages (make-message name message))
+  (response/redirect "/"))
 
 (defroutes app-routes
-  (GET "/" [] (generate-message-view @chat-messages))
-  (POST "/" {params :params}
-    (let [name-param (get params "name")
-          msg-param (get params "msg")
-          new-messages (update-messages! chat-messages name-param msg-param)]
-      (generate-message-view new-messages)
-      ))
+  (GET "/" []
+       (message-view @chat-messages))
+  (POST "/" [name message]
+        (post-new-message chat-messages name message))
   (route/not-found "Not Found"))
 
-(def app (wrap-params app-routes))
+(def app (params/wrap-params app-routes))
 
-(defn init []
-  (println "chatter is starting"))
-
-(defn destroy []
-  (println "chatter is shutting down"))
-
-(defn -main [& [port]]
-  (let [port (Integer. (or port (env :port) 5000))]
-    (jetty/run-jetty #'app {:port port :join? false})))
