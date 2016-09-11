@@ -1,9 +1,12 @@
 Forked from [Minneapolis Clojurebridge Track 1](https://github.com/clojurebridge-minneapolis/track1-chatter) Project. We thank them for starting this and sharing it.
 
-### Table Of Contents For The Workshop
-* [Chapter 1: ClojureBridge Track 1](Pages/Page%201_Intro%20TOC.md)
-* [Chapter 2: Big Picture](Pages/Page%202_Big%20Picture.md)
-* [Chapter 3: Starting the Project](Pages/Page%203_Start%20project.md)
-* [Chapter 4: Branches, Merges, Commits](Pages/Page%204_%20Change%20code.md)
-* [Chapter 5: More Code Changes](Pages/Page%205_More%20code%20changes.md)
-* [Chapter 6: Push to Live](Pages/Page%206_Push%20to%20live.md)
+### Table of Contents For The Workshop
+* [Chapter 1: Intro](Pages/1-intro.md)
+* [Chapter 2: Basics](Pages/2-basics.md)
+* [Chapter 3: REPL](Pages/3-repl.md)
+* [Chapter 4: Start Project](Pages/4-start-project.md)
+* [Chapter 5: Build Page](Pages/5-buid-page.md)
+* [Chapter 6: Add Form](Pages/6-add-form.md)
+* [Chapter 7: Add Atom](Pages/7-add-atom.md)
+* [Chapter 8: Add Bootstrap](Pages/8-add-bootstrap.md)
+* [Chapter 10: Push to Live](Pages/10-push-to-github.md)

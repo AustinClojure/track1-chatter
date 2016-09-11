@@ -246,3 +246,5 @@ Save `handler.clj`, then refresh the browser.  Our hard-coded messages should no
 
 ![hard coded messages](https://github.com/clojurebridge-minneapolis/track1-chatter/blob/master/images/hardcoded.jpg "hard coded messages")
 
+
+Next [Chapter 6: Add Form](Pages/6-add-form.md)

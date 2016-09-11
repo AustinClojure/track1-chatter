@@ -135,4 +135,4 @@ Save ```handler.clj``` and refresh the browser. We should now have a form on the
 ![unwired form](https://github.com/clojurebridge-minneapolis/track1-chatter/blob/master/images/unwired-form.jpg "unwired form")
 
 
-
+Next [Chapter 7: Add Atom](Pages/7-add-atom.md)

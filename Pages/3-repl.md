@@ -1,4 +1,5 @@
 # REPL
+
 Start the REPL by typing `lein repl`. You are automatically placed into the user namespace.
 
 Using the `hello-world` function from the previous chapter in the REPL would look like this: 
@@ -47,3 +48,7 @@ clojure.core/first
   Returns the first item in the collection. Calls seq on its
     argument. If coll is nil, returns nil.
 ````
+
+
+
+Next [Chapter 4: Start Project](Pages/4-start-project.md)

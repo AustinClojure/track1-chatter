@@ -248,3 +248,6 @@ Our app now looks like:
 
 (def app (wrap-params app-routes))
 ```
+
+
+Next [Chapter 8: Add Bootstrap](Pages/8-add-bootstrap.md)
