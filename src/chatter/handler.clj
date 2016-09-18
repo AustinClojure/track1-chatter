@@ -25,6 +25,18 @@
    [:div.panel-heading (hiccup/h (:name message))]
    [:div.panel-body (hiccup/h (:message message))]])
 
+(defn form-view []
+  [:form.form-horizontal {:action "/" :method "POST"}
+    [:div.form-group
+      [:label.col-sm-2  "Name:"]
+      [:div.col-sm-10
+        [:input.form-control {:type "text" :name "name"}]]]
+    [:div.form-group
+      [:label.col-sm-2 "Message:"]
+      [:div.col-sm-10
+        [:input.form-control {:type "text" :name "message"}]]]
+   [:input {:type "submit"}]])
+
 (defn message-view
   "This generates the HTML for displaying messages"
   [messages]
@@ -34,20 +46,10 @@
     (page/include-css "/css/bootstrap.min.css")]
    [:body
     [:div.container
-     [:div.row
       [:h1 "Our Chat App"]
-      [:form.form-horizontal {:action "/" :method "POST"}
-       [:div.form-group
-        [:label.col-sm-2  "Name:"]
-        [:div.col-sm-10
-          [:input.form-control {:type "text" :name "name"}]]]
-       [:div.form-group
-        [:label.col-sm-2 "Message: "]
-        [:div.col-sm-10
-         [:input.form-control {:type "text" :name "message"}]]]
-       [:input {:type "submit"}]]]
-     [:div.row
-      (map message-to-row messages)]]]))
+      (form-view)
+      [:div.row
+        (map message-to-row messages)]]]))
 
 (defn post-new-message [chat-messages name message]
   (save-message! chat-messages (make-message name message))
