@@ -21,25 +21,32 @@
 ;; ----------------------------------------
 
 (defn message-to-row [message]
-  [:tr
-   [:td (hiccup/h (:name message))]
-   [:td (hiccup/h (:message message))]])
+  [:div.panel.panel-default
+   [:div.panel-heading (hiccup/h (:name message))]
+   [:div.panel-body (hiccup/h (:message message))]])
 
 (defn message-view
   "This generates the HTML for displaying messages"
   [messages]
   (page/html5
    [:head
-    [:title "chatter"]]
+    [:title "chatter"]
+    (page/include-css "/css/bootstrap.min.css")]
    [:body
-    [:h1 "Our Chat App"]
-    [:p
-     [:form {:action "/" :method "POST"}
-      "Name: "     [:input {:type "text" :name "name"}]
-      "Message: "  [:input {:type "text" :name "message"}]
-      [:input {:type "submit"} "Submit"]]]
-    [:p
-     [:table
+    [:div.container
+     [:div.row
+      [:h1 "Our Chat App"]
+      [:form.form-horizontal {:action "/" :method "POST"}
+       [:div.form-group
+        [:label.col-sm-2  "Name:"]
+        [:div.col-sm-10
+          [:input.form-control {:type "text" :name "name"}]]]
+       [:div.form-group
+        [:label.col-sm-2 "Message: "]
+        [:div.col-sm-10
+         [:input.form-control {:type "text" :name "message"}]]]
+       [:input {:type "submit"}]]]
+     [:div.row
       (map message-to-row messages)]]]))
 
 (defn post-new-message [chat-messages name message]
@@ -51,6 +58,7 @@
        (message-view @chat-messages))
   (POST "/" [name message]
         (post-new-message chat-messages name message))
+  (route/resources "/")
   (route/not-found "Not Found"))
 
 (def app (params/wrap-params app-routes))
