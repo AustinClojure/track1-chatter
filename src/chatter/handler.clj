@@ -41,7 +41,7 @@
       [:label.col-sm-2 "Message:"]
       [:div.col-sm-10
        [:input.form-control {:type "text" :name "message"}]]]
-     [:input {:type "submit" :value "Save" :class "btn btn-primary"}]]]])
+     [:input.btn.btn-primary {:type "submit" :value "Save"}]]]])
 
 (defn index-view
   "This generates the HTML for the index page"
