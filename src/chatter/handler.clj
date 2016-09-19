@@ -20,25 +20,31 @@
 
 ;; ----------------------------------------
 
-(defn message-to-row [message]
-  [:div.panel.panel-default
+(defn message-view
+ "This generates the HTML for displaying a single message"
+ [message]
+ [:div.panel.panel-default
    [:div.panel-heading (hiccup/h (:name message))]
    [:div.panel-body (hiccup/h (:message message))]])
 
-(defn form-view []
-  [:form.form-horizontal {:action "/" :method "POST"}
-    [:div.form-group
+(defn form-view
+ "This generates the HTML for new messages"
+  []
+  [:div.panel.panel-default
+   [:div.panel-body
+    [:form.form-horizontal {:action "/" :method "POST"}
+     [:div.form-group
       [:label.col-sm-2  "Name:"]
       [:div.col-sm-10
-        [:input.form-control {:type "text" :name "name"}]]]
-    [:div.form-group
+       [:input.form-control {:type "text" :name "name"}]]]
+     [:div.form-group
       [:label.col-sm-2 "Message:"]
       [:div.col-sm-10
-        [:input.form-control {:type "text" :name "message"}]]]
-   [:input {:type "submit"}]])
+       [:input.form-control {:type "text" :name "message"}]]]
+     [:input {:type "submit" :value "Save" :class "btn btn-primary"}]]]])
 
-(defn message-view
-  "This generates the HTML for displaying messages"
+(defn index-view
+  "This generates the HTML for the index page"
   [messages]
   (page/html5
    [:head
@@ -46,22 +52,22 @@
     (page/include-css "/css/bootstrap.min.css")]
    [:body
     [:div.container
-      [:h1 "Our Chat App"]
-      (form-view)
-      [:div.row
-        (map message-to-row messages)]]]))
+     [:h1 "Our Chat App"]
+     [:div.row (form-view)]
+     [:div.row (map message-view messages)]]]))
 
-(defn post-new-message [chat-messages name message]
+(defn save-new-message
+  "Add the message as map into our vector of messages in the atom"
+  [chat-messages name message]
   (save-message! chat-messages (make-message name message))
   (response/redirect "/"))
 
 (defroutes app-routes
   (GET "/" []
-       (message-view @chat-messages))
+       (index-view @chat-messages))
   (POST "/" [name message]
-        (post-new-message chat-messages name message))
+        (save-new-message chat-messages name message))
   (route/resources "/")
   (route/not-found "Not Found"))
 
 (def app (params/wrap-params app-routes))
-
